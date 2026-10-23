@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dun Li · To-Do List</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗒️</text></svg>" />
+</head>
+<body data-root="../">
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="../index.html" class="brand">Dun<span>·</span>Li</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+      </button>
+      <nav>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../resume.html">Resume</a></li>
+          <li class="nav__menu">
+            <a href="../projects.html" class="nav__menu-trigger active" aria-haspopup="true" aria-expanded="false">
+              Projects<span class="nav__caret" aria-hidden="true"></span>
+            </a>
+            <ul class="nav__dropdown" aria-label="Projects"></ul>
+          </li>
+          <li><a href="../contact.html">Contact Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <a href="../projects.html" class="back-link">← All projects</a>
+
+    <section class="page-head" style="padding-top:14px;">
+      <h1>To-Do List</h1>
+      <p>Pick a date, write a task, and sort it into one of four priority quadrants.</p>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="todo">
+        <div class="todo__app">
+          <header class="todo__head">
+            <h2 class="todo__title">To-Do List</h2>
+            <p class="todo__subtitle">Pick a date on the calendar, write your task, and press Add.</p>
+          </header>
+
+          <form class="todo__form" id="todoForm" novalidate>
+            <div class="todo__row">
+              <label class="todo__field todo__field--date">
+                <span class="todo__label">Date</span>
+                <input type="date" id="todoDate" class="todo__input" required />
+              </label>
+              <label class="todo__field todo__field--text">
+                <span class="todo__label">Task</span>
+                <textarea id="todoText" class="todo__input todo__input--area" placeholder="What needs to be done?" maxlength="300" required rows="1"></textarea>
+                <span class="todo__charcount" id="todoCharCount">0/300</span>
+              </label>
+            </div>
+            <div class="todo__row todo__row--actions">
+              <div class="todo__field todo__field--prio">
+                <span class="todo__label">Category</span>
+                <div class="todo__prio" id="todoPrio" role="group" aria-label="Task category">
+                  <button type="button" class="todo__prio-btn" data-prio="iu" aria-pressed="false">🔴 Imp. &amp; Urgent</button>
+                  <button type="button" class="todo__prio-btn is-active" data-prio="in" aria-pressed="true">🟡 Important</button>
+                  <button type="button" class="todo__prio-btn" data-prio="nu" aria-pressed="false">🔵 Urgent</button>
+                  <button type="button" class="todo__prio-btn" data-prio="nn" aria-pressed="false">🟢 Optional</button>
+                </div>
+              </div>
+              <button type="submit" class="todo__add" id="todoAdd">Add</button>
+            </div>
+          </form>
+
+          <p class="todo__error" id="todoError" hidden>Please pick a date and write a task.</p>
+
+          <ul class="todo__list" id="todoList" aria-label="Tasks"></ul>
+
+          <p class="todo__empty" id="todoEmpty">No tasks yet — add one above!</p>
+
+          <footer class="todo__foot">
+            <span id="todoCount">0 of 0 tasks completed</span>
+            <button type="button" class="todo__clear" id="todoClear">Clear all</button>
+          </footer>
+
+          <div class="todo__menu" id="todoMenu" hidden role="menu" aria-label="Change category">
+            <button type="button" class="todo__menu-item" data-prio="iu" role="menuitem">🔴 Important &amp; Urgent</button>
+            <button type="button" class="todo__menu-item" data-prio="in" role="menuitem">🟡 Important</button>
+            <button type="button" class="todo__menu-item" data-prio="nu" role="menuitem">🔵 Urgent</button>
+            <button type="button" class="todo__menu-item" data-prio="nn" role="menuitem">🟢 Optional</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__fun">
+        <strong>✨ Fun fact about me</strong>
+        I keep a "happy jar" on my desk filled with notes about tiny, good
+        things that happened each week. At the end of the year, I read them all.
+      </div>
+      <div class="footer__social">
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../contact.html">Email</a>
+      </div>
+      <p class="footer__copy">© 2026 Dun Li · Made with warmth and many cups of coffee.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../script.js"></script>
+  <script src="../projects.js"></script>
+</body>
+</html>

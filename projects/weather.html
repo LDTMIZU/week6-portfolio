@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dun Li · Weather Now</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛅</text></svg>" />
+</head>
+<body data-root="../">
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="../index.html" class="brand">Dun<span>·</span>Li</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+      </button>
+      <nav>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../resume.html">Resume</a></li>
+          <li class="nav__menu">
+            <a href="../projects.html" class="nav__menu-trigger active" aria-haspopup="true" aria-expanded="false">
+              Projects<span class="nav__caret" aria-hidden="true"></span>
+            </a>
+            <ul class="nav__dropdown" aria-label="Projects"></ul>
+          </li>
+          <li><a href="../contact.html">Contact Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <a href="../projects.html" class="back-link">← All projects</a>
+
+    <section class="page-head" style="padding-top:14px;">
+      <h1>Weather Now</h1>
+      <p>Type a city in Chinese or English to see its current weather and the next three days.</p>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="weather">
+        <div class="weather__app">
+          <header class="weather__head">
+            <h2 class="weather__title">Weather Now</h2>
+            <p class="weather__subtitle">Type a city and press Search to see its current weather.</p>
+            <div class="weather__units" id="weatherUnits" role="group" aria-label="Temperature unit">
+              <button type="button" class="weather__unit-btn is-active" data-unit="C" aria-pressed="true">°C</button>
+              <button type="button" class="weather__unit-btn" data-unit="F" aria-pressed="false">°F</button>
+            </div>
+          </header>
+
+          <form class="weather__form" id="weatherForm" novalidate>
+            <label class="weather__field">
+              <span class="weather__label">City</span>
+              <input type="text" id="weatherCity" class="weather__input" placeholder="e.g. Shanghai" autocomplete="off" spellcheck="false" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="weatherSuggestions" />
+            </label>
+            <button type="submit" class="weather__search" id="weatherSearch">Search</button>
+          </form>
+
+          <ul class="weather__suggestions" id="weatherSuggestions" role="listbox" aria-label="City suggestions" hidden></ul>
+
+          <p class="weather__message" id="weatherMessage" role="status" aria-live="polite" hidden></p>
+
+          <div class="weather__card" id="weatherCard" hidden>
+            <div class="weather__icon" id="weatherIcon" aria-hidden="true">🌡️</div>
+            <div class="weather__info">
+              <h3 class="weather__city" id="weatherCityName"></h3>
+              <p class="weather__temp" id="weatherTemp"></p>
+              <p class="weather__cond" id="weatherCond"></p>
+            </div>
+          </div>
+
+          <div class="weather__forecast" id="weatherForecast" hidden></div>
+
+          <p class="weather__attrib">City data: 民政部行政区划代码 · GeoNames (CC BY 4.0)</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__fun">
+        <strong>✨ Fun fact about me</strong>
+        I keep a "happy jar" on my desk filled with notes about tiny, good
+        things that happened each week. At the end of the year, I read them all.
+      </div>
+      <div class="footer__social">
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../contact.html">Email</a>
+      </div>
+      <p class="footer__copy">© 2026 Dun Li · Made with warmth and many cups of coffee.</p>
+    </div>
+  </footer>
+
+  <script src="../weather-cities.js"></script>
+  <script src="../script.js"></script>
+  <script src="../projects.js"></script>
+</body>
+</html>

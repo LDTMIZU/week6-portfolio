@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dun Li · Contact Me</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✉️</text></svg>" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand">Dun<span>·</span>Li</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+      </button>
+      <nav>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li class="nav__menu">
+            <a href="projects.html" class="nav__menu-trigger" aria-haspopup="true" aria-expanded="false">
+              Projects<span class="nav__caret" aria-hidden="true"></span>
+            </a>
+            <ul class="nav__dropdown" aria-label="Projects"></ul>
+          </li>
+          <li><a href="contact.html" class="active">Contact Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="page-head">
+      <h1>Contact Me</h1>
+      <p>Got a question, an idea, or just want to say hi? I'd love to hear from you.</p>
+    </section>
+
+    <section class="section" style="padding-top:20px;">
+      <div class="contact-layout">
+
+        <!-- Contact form -->
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="field">
+            <label for="name">Your name</label>
+            <input type="text" id="name" name="name" placeholder="Jane Doe" required />
+          </div>
+
+          <div class="field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="jane@example.com" required />
+          </div>
+
+          <div class="field">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="What's on your mind?" />
+          </div>
+
+          <div class="field">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell me a little about it..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn--primary">Send message 💌</button>
+          <p class="form-note" id="formNote" hidden></p>
+        </form>
+
+        <!-- Contact info card -->
+        <aside class="contact-info">
+          <h3>Other ways to reach me</h3>
+          <ul>
+            <li>📧 <a href="mailto:hello@dunli.example">hello@dunli.example</a></li>
+            <li>🐦 <a href="https://twitter.com" target="_blank" rel="noopener">@dunli</a></li>
+            <li>💼 <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a></li>
+            <li>🐙 <a href="https://github.com" target="_blank" rel="noopener">GitHub</a></li>
+          </ul>
+          <p style="margin-top:18px; font-size:0.92rem; opacity:0.95;">
+            I usually reply within a couple of days. If it's a project idea, feel
+            free to share all the details — the more, the merrier!
+          </p>
+        </aside>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__fun">
+        <strong>✨ Fun fact about me</strong>
+        I write handwritten letters to friends on their birthdays — complete
+        with doodles, bad jokes, and lots of stickers. Snail mail forever!
+      </div>
+      <div class="footer__social">
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="contact.html">Email</a>
+      </div>
+      <p class="footer__copy">© 2026 Dun Li · Made with warmth and many cups of coffee.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="projects.js"></script>
+</body>
+</html>

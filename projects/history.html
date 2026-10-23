@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Two Histories, One Axis · Dun Li</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📜</text></svg>" />
+  <style>
+    /* ======================================================================
+       Two Histories, One Axis — a single-file comparative timeline.
+       European periods sit above the axis, Chinese periods below it.
+       Blocks are placed by year and packed into lanes so nothing collides.
+       ====================================================================== */
+
+    :root {
+      --ink:        #3b2b1a;
+      --ink-soft:   #6b5338;
+      --ink-faint:  #9a7f58;
+      --rule:       rgba(90, 66, 38, 0.32);
+      --eu:         #2f4a58;
+      --cn:         #8a2f24;
+      --paper:      #f3e8ce;
+    }
+
+    *,
+    *::before,
+    *::after { box-sizing: border-box; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      min-height: 100%;
+      background-color: #e5d5b4;
+      background-image:
+        radial-gradient(130% 85% at 50% -8%, #fdf7e8 0%, #f2e7cd 38%, #e5d4b1 72%, #d8c39c 100%);
+      color: var(--ink);
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, "Iowan Old Style",
+                   Georgia, "Times New Roman", serif;
+      line-height: 1.55;
+    }
+
+    /* Paper grain + a soft vignette, both non-interactive */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      opacity: 0.07;
+      mix-blend-mode: multiply;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      background: radial-gradient(130% 105% at 50% 45%, rgba(80, 54, 26, 0) 58%, rgba(80, 54, 26, 0.16) 100%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 1480px;
+      margin: 0 auto;
+      padding: 26px 26px 54px;
+    }
+
+    /* ----- Top line ------------------------------------------------------ */
+    .topline {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .topline a {
+      color: var(--ink-soft);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: color 0.18s ease, border-color 0.18s ease;
+    }
+    .topline a:hover {
+      color: var(--cn);
+      border-bottom-color: rgba(138, 47, 36, 0.5);
+    }
+
+    /* ----- Masthead ------------------------------------------------------ */
+    .masthead { text-align: center; padding: 16px 0 0; }
+
+    .kicker {
+      margin: 0 0 10px;
+      font-size: 0.66rem;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .masthead h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 4.4vw, 3rem);
+      font-weight: 600;
+      font-variant: small-caps;
+      letter-spacing: 0.03em;
+      line-height: 1.1;
+      text-shadow: 0 1px 0 rgba(255, 252, 244, 0.8);
+    }
+
+    .deck {
+      margin: 10px auto 0;
+      max-width: 60ch;
+      font-size: 0.95rem;
+      font-style: italic;
+      color: var(--ink-soft);
+    }
+
+    .rule {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 18px auto 0;
+      max-width: 520px;
+      color: var(--ink-faint);
+      font-size: 0.8rem;
+    }
+    .rule::before,
+    .rule::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(90, 66, 38, 0), var(--rule) 30%, var(--rule) 70%, rgba(90, 66, 38, 0));
+    }
+
+    /* ----- Toolbar ------------------------------------------------------- */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px 24px;
+      flex-wrap: wrap;
+      margin: 26px 0 12px;
+    }
+
+    .jumps { display: flex; flex-wrap: wrap; gap: 6px; }
+
+    .jump {
+      font: inherit;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 11px;
+      color: var(--ink-soft);
+      background: rgba(255, 252, 243, 0.55);
+      border: 1px solid var(--rule);
+      border-radius: 1px;
+      cursor: pointer;
+      transition: color 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+    }
+    .jump:hover {
+      color: #f7edd8;
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+    .jump:focus-visible {
+      outline: 2px solid rgba(138, 47, 36, 0.65);
+      outline-offset: 2px;
+    }
+
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    .key { display: inline-flex; align-items: center; gap: 7px; }
+    .key::before {
+      content: "";
+      width: 15px;
+      height: 9px;
+      border: 1px solid;
+      border-radius: 1px;
+    }
+    .key--eu::before {
+      background: rgba(47, 74, 88, 0.22);
+      border-color: rgba(47, 74, 88, 0.62);
+    }
+    .key--cn::before {
+      background: rgba(138, 47, 36, 0.2);
+      border-color: rgba(138, 47, 36, 0.6);
+    }
+
+    /* ----- Caption (reading desk) ---------------------------------------- */
+    .caption {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      flex-wrap: wrap;
+      min-height: 1.7em;
+      margin: 0 0 10px;
+      font-size: 0.86rem;
+      color: var(--ink-soft);
+    }
+
+    .caption__label {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .caption__text { font-style: italic; transition: color 0.18s ease; }
+    .caption.is-eu .caption__text { color: #23404e; }
+    .caption.is-cn .caption__text { color: #7a2b21; }
+
+    /* ----- Chart viewport ------------------------------------------------ */
+    .viewport {
+      position: relative;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 18px 0 16px;
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      background:
+        linear-gradient(180deg,
+          rgba(255, 252, 243, 0.55) 0%,
+          rgba(255, 250, 236, 0.12) 26%,
+          rgba(255, 250, 236, 0.12) 74%,
+          rgba(255, 252, 243, 0.5) 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        inset 0 0 80px rgba(122, 92, 50, 0.09);
+    }
+
+    .viewport::-webkit-scrollbar { height: 10px; }
+    .viewport::-webkit-scrollbar-track { background: rgba(90, 66, 38, 0.08); }
+    .viewport::-webkit-scrollbar-thumb {
+      background: rgba(90, 66, 38, 0.35);
+      border-radius: 8px;
+    }
+    .viewport::-webkit-scrollbar-thumb:hover { background: rgba(90, 66, 38, 0.5); }
+
+    .chart { position: relative; }
+
+    /* ----- Bands and lanes ------------------------------------------------ */
+    .band {
+      position: relative;
+      z-index: 1;
+    }
+    .band--eu { display: flex; flex-direction: column-reverse; } /* lane 0 hugs the axis */
+    .band--cn { display: flex; flex-direction: column; }         /* lane 0 hugs the axis */
+
+    .lane {
+      position: relative;
+      height: 30px;
+      width: 100%;
+    }
+    .lane:nth-child(even) { background: rgba(120, 90, 50, 0.035); }
+
+    /* ----- Blocks --------------------------------------------------------- */
+    .block {
+      position: absolute;
+      top: 4px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 7px;
+      overflow: hidden;
+      border: 1px solid;
+      border-radius: 2px;
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: default;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+    }
+
+    .block--eu {
+      background: linear-gradient(180deg, rgba(47, 74, 88, 0.26), rgba(47, 74, 88, 0.16));
+      border-color: rgba(38, 60, 74, 0.6);
+      color: #1f303a;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+
+    .block--cn {
+      background: linear-gradient(180deg, rgba(138, 47, 36, 0.23), rgba(138, 47, 36, 0.13));
+      border-color: rgba(122, 38, 28, 0.58);
+      color: #5c1e16;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34);
+    }
+
+    .block__label {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Very short periods: a thin solid mark with its name hanging beside it */
+    .block--tag { padding: 0; overflow: visible; z-index: 2; }
+    .block--eu.block--tag { background: rgba(47, 74, 88, 0.88); border-color: rgba(38, 60, 74, 0.95); }
+    .block--cn.block--tag { background: rgba(138, 47, 36, 0.88); border-color: rgba(122, 38, 28, 0.95); }
+
+    .block--tag .block__label {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      margin-left: 5px;
+      max-width: none;
+      overflow: visible;
+      font-size: 10px;
+      color: #46331f;
+      text-shadow: 0 1px 0 rgba(255, 252, 242, 0.85);
+    }
+
+    .block:hover,
+    .block:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(255, 253, 246, 0.75);
+      box-shadow: 0 3px 11px rgba(58, 44, 28, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+      outline: none;
+    }
+    .block--eu:hover,
+    .block--eu:focus-visible { background: rgba(47, 74, 88, 0.34); }
+    .block--cn:hover,
+    .block--cn:focus-visible { background: rgba(138, 47, 36, 0.32); }
+
+    .block:focus-visible {
+      outline: 1px solid rgba(138, 47, 36, 0.75);
+      outline-offset: 2px;
+    }
+
+    /* ----- Axis ----------------------------------------------------------- */
+    .axis {
+      position: relative;
+      height: 54px;
+      margin: 6px 0;
+    }
+
+    .axis__line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        rgba(58, 44, 28, 0) 0%,
+        rgba(58, 44, 28, 0.6) 4%,
+        rgba(58, 44, 28, 0.6) 96%,
+        rgba(58, 44, 28, 0) 100%);
+    }
+
+    .tick {
+      position: absolute;
+      top: 0;
+      width: 1px;
+      background: rgba(58, 44, 28, 0.3);
+    }
+    .tick--sm { height: 5px; }
+    .tick--lg { height: 9px; background: rgba(58, 44, 28, 0.58); }
+
+    .tick__lab {
+      position: absolute;
+      left: 0;
+      top: 13px;
+      transform: translateX(-50%);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      white-space: nowrap;
+    }
+
+    .era-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 0;
+      width: 1px;
+      background: rgba(138, 47, 36, 0.22);
+    }
+
+    .era-tag {
+      position: absolute;
+      top: 13px;
+      font-size: 9.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #a3726a;
+    }
+
+    /* ----- Footnote ------------------------------------------------------- */
+    .note {
+      margin: 16px 0 0;
+      font-size: 0.76rem;
+      font-style: italic;
+      color: var(--ink-faint);
+      text-align: center;
+    }
+
+    /* ----- Small screens --------------------------------------------------- */
+    @media (max-width: 700px) {
+      .page { padding: 20px 14px 40px; }
+      .masthead h1 { font-size: 1.85rem; }
+      .deck { font-size: 0.88rem; }
+      .toolbar { margin-top: 20px; }
+      .legend { display: none; }
+      .caption { font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="topline">
+    <a href="../projects.html">← All projects</a>
+    <span>Folio&nbsp;II</span>
+  </div>
+
+  <header class="masthead">
+    <p class="kicker">A Lesson in Time</p>
+    <h1>Two Histories, One Axis</h1>
+    <p class="deck">
+      European periods above the line, Chinese periods below — every block set
+      strictly by its years, on one shared scale.
+    </p>
+    <div class="rule"><span>✦</span></div>
+  </header>
+
+  <div class="toolbar">
+    <div class="jumps" id="jumps"></div>
+    <div class="legend">
+      <span class="key key--eu">Europe</span>
+      <span class="key key--cn">China</span>
+    </div>
+  </div>
+
+  <p class="caption" id="caption">
+    <span class="caption__label">Reading desk</span>
+    <span class="caption__text" id="captionText">Hover or focus any block to read its dates.</span>
+  </p>
+
+  <div class="viewport" id="viewport">
+    <div class="chart" id="chart">
+
+      <div class="band band--eu" id="bandEu" aria-label="European periods"></div>
+
+      <div class="axis" id="axis">
+        <div class="axis__line"></div>
+      </div>
+
+      <div class="band band--cn" id="bandCn" aria-label="Chinese periods"></div>
+
+    </div>
+  </div>
+
+  <p class="note">
+    Overlapping periods are stacked into separate rows, so no two blocks ever collide.
+  </p>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* Years are numbers: negative = BC, positive = AD.
+     a = first year, b = last year. */
+  var CHINA = [
+    { n: "Zhou 周",                              a: -1046, b: -256 },
+    { n: "Qin 秦",                                a: -221, b: -207 },
+    { n: "Han 汉",                                a: -202, b: 220 },
+    { n: "Three Kingdoms 三国",                   a: 220,  b: 280 },
+    { n: "Jin 晋",                                a: 265,  b: 420 },
+    { n: "Northern and Southern Dynasties 南北朝", a: 420,  b: 589 },
+    { n: "Sui 隋",                                a: 581,  b: 618 },
+    { n: "Tang 唐",                               a: 618,  b: 907 },
+    { n: "Five Dynasties 五代",                   a: 907,  b: 960 },
+    { n: "Song 宋",                               a: 960,  b: 1279 },
+    { n: "Yuan 元",                               a: 1271, b: 1368 },
+    { n: "Ming 明",                               a: 1368, b: 1644 },
+    { n: "Qing 清",                               a: 1636, b: 1912 }
+  ];
+
+  var EUROPE = [
+    { n: "Roman Republic",              a: -509, b: -27  },
+    { n: "Western Roman Empire",        a: -27,  b: 476  },
+    { n: "Eastern Roman Empire",        a: 330,  b: 1453 },
+    { n: "Middle Ages",                 a: 476,  b: 1453 },
+    { n: "Frankish Kingdom",            a: 481,  b: 843  },
+    { n: "Kievan Rus'",                 a: 882,  b: 1240 },
+    { n: "Duchy of Normandy",           a: 911,  b: 1204 },
+    { n: "Kingdom of England",          a: 927,  b: 1707 },
+    { n: "Holy Roman Empire",           a: 962,  b: 1806 },
+    { n: "Grand Duchy of Moscow",       a: 1283, b: 1547 },
+    { n: "Ottoman Empire",              a: 1299, b: 1923 },
+    { n: "Portuguese Empire",           a: 1415, b: 1999 },
+    { n: "Spanish Empire",              a: 1492, b: 1898 },
+    { n: "Tsardom of Russia",           a: 1547, b: 1721 },
+    { n: "Dutch Republic",              a: 1581, b: 1795 },
+    { n: "Commonwealth of England",     a: 1649, b: 1660 },
+    { n: "Russian Empire",              a: 1721, b: 1917 },
+    { n: "First French Empire",         a: 1804, b: 1815 },
+    { n: "German Confederation",        a: 1815, b: 1866 },
+    { n: "Kingdom of Italy",            a: 1861, b: 1946 },
+    { n: "Austro-Hungarian Empire",     a: 1867, b: 1918 },
+    { n: "German Empire",               a: 1871, b: 1918 },
+    { n: "Soviet Union",                a: 1922, b: 1991 }
+  ];
+
+  /* ----- Scale --------------------------------------------------------- */
+  var PX = 1.6;              // pixels per year
+  var MIN_YEAR = -1100;
+  var MAX_YEAR = 2050;
+  var CHART_W = Math.round((MAX_YEAR - MIN_YEAR) * PX);
+
+  var chart = document.getElementById("chart");
+  var viewport = document.getElementById("viewport");
+  var bandEu = document.getElementById("bandEu");
+  var bandCn = document.getElementById("bandCn");
+  var axis = document.getElementById("axis");
+  var jumps = document.getElementById("jumps");
+  var caption = document.getElementById("caption");
+  var captionText = document.getElementById("captionText");
+  var DEFAULT_CAPTION = captionText.textContent;
+
+  function x(year) {
+    return (year - MIN_YEAR) * PX;
+  }
+
+  /* Rough text width: CJK glyphs are about twice as wide as Latin ones. */
+  function labelWidth(text, size) {
+    var w = 0;
+    for (var i = 0; i < text.length; i++) {
+      w += text.charCodeAt(i) > 0x2e80 ? size : size * 0.52;
+    }
+    return w;
+  }
+
+  /* ----- Give every period its geometry --------------------------------- */
+  function prepare(list, side) {
+    list.forEach(function (it) {
+      it.side = side;
+      it.x0 = x(it.a);
+      it.x1 = x(it.b);
+      it.w = Math.max(5, it.x1 - it.x0);
+
+      // Not enough room inside the block? Hang the label beside it instead.
+      it.outside = it.w < labelWidth(it.n, 10.5) + 18;
+
+      if (it.outside) {
+        it.visL = it.x0;
+        it.visR = it.x1 + 6 + labelWidth(it.n, 10);
+      } else {
+        it.visL = it.x0 - 3;
+        it.visR = it.x1 + 3;
+      }
+    });
+  }
+
+  /* ----- Lane packing: first row whose last block ends before this one --- */
+  function pack(items) {
+    items.sort(function (p, q) { return p.visL - q.visL; });
+
+    var laneEnds = [];
+
+    items.forEach(function (it) {
+      var lane = -1;
+      for (var i = 0; i < laneEnds.length; i++) {
+        if (laneEnds[i] <= it.visL) {
+          lane = i;
+          laneEnds[i] = it.visR;
+          break;
+        }
+      }
+      if (lane === -1) {
+        lane = laneEnds.length;
+        laneEnds.push(it.visR);
+      }
+      it.lane = lane;
+    });
+
+    return laneEnds.length;
+  }
+
+  /* ----- Dates ---------------------------------------------------------- */
+  function stamp(v) {
+    return v < 0 ? Math.abs(v) + " BC" : String(v);
+  }
+
+  function span(a, b) {
+    if (a < 0 && b < 0) return stamp(a) + " – " + stamp(b);
+    if (a < 0) return stamp(a) + " – AD " + b;
+    return a + " – " + b + " AD";
+  }
+
+  /* ----- Render --------------------------------------------------------- */
+  function render(list, band) {
+    var lanes = pack(list);
+
+    for (var i = 0; i < lanes; i++) {
+      var lane = document.createElement("div");
+      lane.className = "lane";
+      band.appendChild(lane);
+    }
+
+    list.forEach(function (it) {
+      var el = document.createElement("div");
+      el.className = "block block--" + it.side + (it.outside ? " block--tag" : "");
+      el.style.left = it.x0.toFixed(1) + "px";
+      el.style.width = it.w.toFixed(1) + "px";
+      el.tabIndex = 0;
+      el.setAttribute("aria-label", it.n + ", " + span(it.a, it.b));
+
+      var label = document.createElement("span");
+      label.className = "block__label";
+      label.textContent = it.n;
+      el.appendChild(label);
+
+      el.addEventListener("mouseenter", function () { show(it); });
+      el.addEventListener("mouseleave", hide);
+      el.addEventListener("focus", function () { show(it); });
+      el.addEventListener("blur", hide);
+
+      band.children[it.lane].appendChild(el);
+    });
+  }
+
+  function show(it) {
+    captionText.textContent =
+      it.n + "  ·  " + span(it.a, it.b) + "  ·  " + (it.b - it.a) + " years";
+    caption.classList.toggle("is-eu", it.side === "eu");
+    caption.classList.toggle("is-cn", it.side === "cn");
+  }
+
+  function hide() {
+    captionText.textContent = DEFAULT_CAPTION;
+    caption.classList.remove("is-eu", "is-cn");
+  }
+
+  /* ----- Axis ------------------------------------------------------------ */
+  function buildAxis() {
+    for (var y = -1000; y <= 2000; y += 50) {
+      if (y === 0) continue;
+
+      var major = y % 100 === 0;
+      var tick = document.createElement("div");
+      tick.className = "tick " + (major ? "tick--lg" : "tick--sm");
+      tick.style.left = x(y).toFixed(1) + "px";
+
+      if (major) {
+        var lab = document.createElement("span");
+        lab.className = "tick__lab";
+        lab.textContent = y < 0 ? Math.abs(y) + " BC" : String(y);
+        tick.appendChild(lab);
+      }
+
+      axis.appendChild(tick);
+    }
+
+    var divider = document.createElement("div");
+    divider.className = "era-line";
+    divider.style.left = x(0).toFixed(1) + "px";
+    chart.appendChild(divider);
+
+    var tag = document.createElement("span");
+    tag.className = "era-tag";
+    tag.textContent = "AD";
+    tag.style.left = (x(0) + 7).toFixed(1) + "px";
+    axis.appendChild(tag);
+  }
+
+  /* ----- Era shortcuts --------------------------------------------------- */
+  var JUMPS = [
+    { y: -1046, label: "1046 BC" },
+    { y: -500,  label: "500 BC" },
+    { y: 1,     label: "AD 1" },
+    { y: 500,   label: "500" },
+    { y: 1000,  label: "1000" },
+    { y: 1400,  label: "1400" },
+    { y: 1800,  label: "1800" }
+  ];
+
+  function buildJumps() {
+    JUMPS.forEach(function (j) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "jump";
+      btn.textContent = j.label;
+
+      btn.addEventListener("click", function () {
+        var target = Math.max(0, x(j.y) - viewport.clientWidth / 2);
+        if (viewport.scrollTo) {
+          viewport.scrollTo({ left: target, behavior: "smooth" });
+        } else {
+          viewport.scrollLeft = target;
+        }
+      });
+
+      jumps.appendChild(btn);
+    });
+  }
+
+  /* ----- Boot ------------------------------------------------------------ */
+  chart.style.width = CHART_W + "px";
+
+  prepare(EUROPE, "eu");
+  prepare(CHINA, "cn");
+
+  render(EUROPE, bandEu);
+  render(CHINA, bandCn);
+
+  buildAxis();
+  buildJumps();
+})();
+</script>
+
+</body>
+</html>

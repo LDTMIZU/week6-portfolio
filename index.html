@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dun Li · Home</title>
+  <meta name="description" content="Hi! I'm Dun Li — a friendly developer who loves building warm, human-centered software." />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>" />
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="index.html" class="brand">Dun<span>·</span>Li</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+      </button>
+      <nav>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="resume.html">Resume</a></li>
+          <li class="nav__menu">
+            <a href="projects.html" class="nav__menu-trigger" aria-haspopup="true" aria-expanded="false">
+              Projects<span class="nav__caret" aria-hidden="true"></span>
+            </a>
+            <ul class="nav__dropdown" aria-label="Projects"></ul>
+          </li>
+          <li><a href="contact.html">Contact Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__photo">
+        <img
+          src="headshot.png"
+          alt="Dun Li headshot"
+          loading="eager" />
+      </div>
+      <div class="hero__content">
+        <p class="tagline">Welcome to my little corner of the web</p>
+        <h1>Hi, I'm Dun <span class="wave">👋</span></h1>
+        <p class="intro">
+          I'm a student of Digital Education at Xi'an Jiaotong-Liverpool University. I'm fascinated
+          by how technology can shape the way we learn and think. In my free
+          time, I'm drawn to all things deduction — mystery games, detective
+          novels, and playing computer games with friends.
+        </p>
+        <a href="projects.html" class="btn btn--primary">See my work →</a>
+        <a href="contact.html" class="btn btn--ghost" style="margin-left:10px;">Say hello</a>
+      </div>
+    </section>
+
+    <!-- Three things I like -->
+    <section class="section">
+      <h2 class="section__title">Three things I love</h2>
+      <p class="section__subtitle">The little things that keep me going every day</p>
+
+      <div class="cards">
+        <article class="card"
+          style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=A%20group%20of%20friends%20sitting%20together%20around%20a%20table%20playing%20a%20murder%20mystery%20board%20game%2C%20cards%20and%20character%20sheets%20on%20the%20table%2C%20warm%20cozy%20lighting%2C%20cherry%20blossom%20pink%20and%20white%20tones%2C%20fun%20and%20intriguing%20atmosphere&image_size=landscape_4_3');">
+          <div class="card__overlay">
+            <h3>Mystery Games</h3>
+            <p>Gathering friends for a round of murder mystery — roles, accusations, and the thrill of uncovering the culprit together.</p>
+          </div>
+        </article>
+
+        <article class="card"
+          style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Agatha%20Christie%20And%20Then%20There%20Were%20None%20mystery%20novel%20book%20on%20a%20table%2C%20vintage%20hardcover%20book%20with%20dramatic%20cover%2C%20soft%20lamp%20light%2C%20cherry%20blossom%20pink%20and%20white%20tones%2C%20cozy%20and%20suspenseful%20mood&image_size=landscape_4_3');">
+          <div class="card__overlay">
+            <h3>Detective Novels</h3>
+            <p>Agatha Christie's "And Then There Were None" tops my list — a comfy chair and a twisty plot is my perfect evening.</p>
+          </div>
+        </article>
+
+        <article class="card"
+          style="background-image: url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Modern%20computer%20gaming%20setup%20with%20glowing%20monitor%2C%20mechanical%20keyboard%2C%20gaming%20mouse%2C%20cozy%20desk%20scene%2C%20cherry%20blossom%20pink%20and%20white%20tones%2C%20playful%20and%20immersive%20mood&image_size=landscape_4_3');">
+          <div class="card__overlay">
+            <h3>Playing Computer Games</h3>
+            <p>From indie gems to multiplayer adventures, I love diving into new worlds on my PC — Steam is my second home.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer with fun fact -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__fun">
+        <strong>✨ Fun fact about me</strong>
+        I once spent an entire afternoon reading through a series of detective
+        novels just so that I could find out the solution earlier.
+      </div>
+      <div class="footer__social">
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="contact.html">Email</a>
+      </div>
+      <p class="footer__copy">© 2026 Dun Li · Made with warmth and many cups of coffee.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="projects.js"></script>
+</body>
+</html>

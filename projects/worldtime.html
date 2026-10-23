@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dun Li · World Time</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕒</text></svg>" />
+</head>
+<body data-root="../">
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a href="../index.html" class="brand">Dun<span>·</span>Li</a>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span></span>
+      </button>
+      <nav>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../resume.html">Resume</a></li>
+          <li class="nav__menu">
+            <a href="../projects.html" class="nav__menu-trigger active" aria-haspopup="true" aria-expanded="false">
+              Projects<span class="nav__caret" aria-hidden="true"></span>
+            </a>
+            <ul class="nav__dropdown" aria-label="Projects"></ul>
+          </li>
+          <li><a href="../contact.html">Contact Me</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <a href="../projects.html" class="back-link">← All projects</a>
+
+    <section class="page-head" style="padding-top:14px;">
+      <h1>World Time</h1>
+      <p>Type a city in Chinese or English and watch its local clock tick live.</p>
+    </section>
+
+    <section class="section" style="padding-top:0;">
+      <div class="worldtime">
+        <div class="worldtime__app">
+          <header class="worldtime__head">
+            <h2 class="worldtime__title">World Time</h2>
+            <p class="worldtime__subtitle">Type a city in Chinese or English and press Show time to see its local clock.</p>
+          </header>
+
+          <form class="worldtime__form" id="worldtimeForm" novalidate>
+            <label class="worldtime__field">
+              <span class="worldtime__label">City</span>
+              <input type="text" id="worldtimeCity" class="worldtime__input" placeholder="e.g. 上海 or Tokyo" autocomplete="off" spellcheck="false" />
+            </label>
+            <button type="submit" class="worldtime__search" id="worldtimeSearch">Show time</button>
+          </form>
+
+          <div class="worldtime__presets" id="worldtimePresets" role="group" aria-label="Quick cities">
+            <button type="button" class="worldtime__preset" data-city="london">London</button>
+            <button type="button" class="worldtime__preset" data-city="newyork">New York</button>
+            <button type="button" class="worldtime__preset" data-city="tokyo">Tokyo</button>
+            <button type="button" class="worldtime__preset" data-city="paris">Paris</button>
+            <button type="button" class="worldtime__preset" data-city="dubai">Dubai</button>
+            <button type="button" class="worldtime__preset" data-city="sydney">Sydney</button>
+          </div>
+
+          <p class="worldtime__message" id="worldtimeMessage" role="status" aria-live="polite" hidden></p>
+
+          <div class="worldtime__card" id="worldtimeCard" hidden>
+            <div class="worldtime__icon" aria-hidden="true">🕒</div>
+            <div class="worldtime__info">
+              <h3 class="worldtime__city" id="worldtimeCityName"></h3>
+              <p class="worldtime__clock" id="worldtimeClock">--:--:--</p>
+              <p class="worldtime__meta" id="worldtimeMeta"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__fun">
+        <strong>✨ Fun fact about me</strong>
+        I keep a "happy jar" on my desk filled with notes about tiny, good
+        things that happened each week. At the end of the year, I read them all.
+      </div>
+      <div class="footer__social">
+        <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="../contact.html">Email</a>
+      </div>
+      <p class="footer__copy">© 2026 Dun Li · Made with warmth and many cups of coffee.</p>
+    </div>
+  </footer>
+
+  <script src="../weather-cities.js"></script>
+  <script src="../script.js"></script>
+  <script src="../projects.js"></script>
+</body>
+</html>
